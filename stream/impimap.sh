@@ -1,0 +1,3 @@
+#!/bin/sh
+
+numactl --localalloc $@
