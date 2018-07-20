@@ -1,0 +1,120 @@
+### INITIAL connectivity
+I=    1     INL(i)=    0     INU(i)=    2
+  IAL:
+  IAU:    2    5
+I=    2     INL(i)=    1     INU(i)=    2
+  IAL:    1
+  IAU:    3    6
+I=    3     INL(i)=    1     INU(i)=    2
+  IAL:    2
+  IAU:    4    7
+I=    4     INL(i)=    1     INU(i)=    1
+  IAL:    3
+  IAU:    8
+I=    5     INL(i)=    1     INU(i)=    2
+  IAL:    1
+  IAU:    6    9
+I=    6     INL(i)=    2     INU(i)=    2
+  IAL:    2    5
+  IAU:    7   10
+I=    7     INL(i)=    2     INU(i)=    2
+  IAL:    3    6
+  IAU:    8   11
+I=    8     INL(i)=    2     INU(i)=    1
+  IAL:    4    7
+  IAU:   12
+I=    9     INL(i)=    1     INU(i)=    2
+  IAL:    5
+  IAU:   10   13
+I=   10     INL(i)=    2     INU(i)=    2
+  IAL:    6    9
+  IAU:   11   14
+I=   11     INL(i)=    2     INU(i)=    2
+  IAL:    7   10
+  IAU:   12   15
+I=   12     INL(i)=    2     INU(i)=    1
+  IAL:    8   11
+  IAU:   16
+I=   13     INL(i)=    1     INU(i)=    1
+  IAL:    9
+  IAU:   14
+I=   14     INL(i)=    2     INU(i)=    1
+  IAL:   10   13
+  IAU:   15
+I=   15     INL(i)=    2     INU(i)=    1
+  IAL:   11   14
+  IAU:   16
+I=   16     INL(i)=    2     INU(i)=    0
+  IAL:   12   15
+  IAU:
+
+
+COLOR number       7
+
+  #new       1   #old       1  color       1
+  #new       2   #old       2  color       2
+  #new       3   #old       5  color       2
+  #new       4   #old       3  color       3
+  #new       5   #old       6  color       3
+  #new       6   #old       9  color       3
+  #new       7   #old       4  color       4
+  #new       8   #old       7  color       4
+  #new       9   #old      10  color       4
+  #new      10   #old      13  color       4
+  #new      11   #old       8  color       5
+  #new      12   #old      11  color       5
+  #new      13   #old      14  color       5
+  #new      14   #old      12  color       6
+  #new      15   #old      15  color       6
+  #new      16   #old      16  color       7
+
+
+### FINAL connectivity
+I=    1     INL(i)=    0     INU(i)=    2
+  IAL:
+  IAU:    2    3
+I=    2     INL(i)=    1     INU(i)=    2
+  IAL:    1
+  IAU:    4    5
+I=    3     INL(i)=    1     INU(i)=    2
+  IAL:    1
+  IAU:    5    6
+I=    4     INL(i)=    1     INU(i)=    2
+  IAL:    2
+  IAU:    7    8
+I=    5     INL(i)=    2     INU(i)=    2
+  IAL:    2    3
+  IAU:    8    9
+I=    6     INL(i)=    1     INU(i)=    2
+  IAL:    3
+  IAU:    9   10
+I=    7     INL(i)=    1     INU(i)=    1
+  IAL:    4
+  IAU:   11
+I=    8     INL(i)=    2     INU(i)=    2
+  IAL:    4    5
+  IAU:   11   12
+I=    9     INL(i)=    2     INU(i)=    2
+  IAL:    5    6
+  IAU:   12   13
+I=   10     INL(i)=    1     INU(i)=    1
+  IAL:    6
+  IAU:   13
+I=   11     INL(i)=    2     INU(i)=    1
+  IAL:    7    8
+  IAU:   14
+I=   12     INL(i)=    2     INU(i)=    2
+  IAL:    8    9
+  IAU:   14   15
+I=   13     INL(i)=    2     INU(i)=    1
+  IAL:    9   10
+  IAU:   15
+I=   14     INL(i)=    2     INU(i)=    1
+  IAL:   11   12
+  IAU:   16
+I=   15     INL(i)=    2     INU(i)=    1
+  IAL:   12   13
+  IAU:   16
+I=   16     INL(i)=    2     INU(i)=    0
+  IAL:   14   15
+  IAU:
