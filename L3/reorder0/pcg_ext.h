@@ -4,6 +4,7 @@
 	extern int N2;
 	extern int NUmax, NLmax, NCOLORtot, NCOLORk, NU, NL;
 	extern int METHOD, ORDER_METHOD;
+	extern int NFLAG;
 
 	extern double EPSICCG;
 

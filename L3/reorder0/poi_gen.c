@@ -40,22 +40,67 @@ POI_GEN(void)
         indexL = (int *)allocate_vector(sizeof(int),ICELTOT+1);
         indexU = (int *)allocate_vector(sizeof(int),ICELTOT+1);
 
-        for (i = 0; i <ICELTOT ; i++) {
-		BFORCE[i]=0.0;
-		D[i]  =0.0;
-		PHI[i]=0.0;
-        	INL[i] = 0;
-        	INU[i] = 0;
-        	for(j=0;j<6;j++){
-			IAL[i][j]=0;
-			IAU[i][j]=0;
+/*old code
+		if (NFLAG == 0) {
+			for (i = 0; i <ICELTOT ; i++) {
+				BFORCE[i]=0.0;
+				D[i]  =0.0;
+				PHI[i]=0.0;
+				INL[i] = 0;
+				INU[i] = 0;
+				for(j=0;j<6;j++){
+					IAL[i][j]=0;
+					IAU[i][j]=0;
+				}
+
+			}
+			for (i = 0; i <=ICELTOT ; i++) {
+				indexL[i] = 0;
+				indexU[i] = 0;
+			}
+		} else {
 		}
-		
-        }
-        for (i = 0; i <=ICELTOT ; i++) {
-		indexL[i] = 0;
-		indexU[i] = 0;
-	}
+*/
+
+		if(NFLAG == 0){
+			for(i=0; i<ICELTOT; i++) {
+				BFORCE[i] = 0.0;
+				D[i] = 0.0;
+				PHI[i] = 0.0;
+			}
+			for(i=0; i<=ICELTOT; i++) {
+				indexLnew[i] = indexLnew_org[i];
+				indexUnew[i] = indexUnew_org[i]; }
+			for(i=0; i<NPL; i++) {
+				itemLnew[i] = 0;
+				ALnew[i] = 0.0;
+			}
+			for(i=0; i<NPU; i++) {
+				itemUnew[i] = 0;
+				AUnew[i] = 0.0;
+			}
+		}else {
+			indexLnew[0]=0;
+			indexUnew[0]=0;
+#pragma omp parallel for private(ic el, j)
+			for(ip=1; ip<=PEsmpTOT; ip++){
+				for(icel = SMPindex_new[(ip-1)*NCOLORtot]+1; icel<=SMPindex_new[ip*NCOLORtot]; icel++){
+					BFORCE[icel-1] = 0.0;
+					PHI[icel-1] = 0.0;
+					D[icel-1] = 0.0;
+					indexLnew[icel]=indexLnew_org[icel];
+					indexUnew[icel]=indexUnew_org[icel];
+					for(j=indexLnew_org[icel-1];j<indexLnew_org[icel];j++){
+						itemLnew[j]=0;
+						ALnew[j] = 0.0;
+					}
+					for(j=indexUnew_org[icel-1];j<indexUnew_org[icel];j++){
+						itemUnew[j]=0;
+						AUnew[j] = 0.0;
+					}
+				}
+			}
+		}
 
 
 /*********************************
