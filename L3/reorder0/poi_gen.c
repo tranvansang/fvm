@@ -172,11 +172,22 @@ N111:
 		}
 	}
 
+	SMPindex_new = (int *) allocate_vector(sizeof(int), NCOLORtot * PEsmpTOT + 1);
+	memset(SMPindex_new, 0, sizeof(int) * (NCOLORtot * PEsmpTOT + 1));
+
 	for(ic=1; ic<=NCOLORtot; ic++) {
 		for(ip=1; ip<=PEsmpTOT; ip++) {
 			j1 = (ic-1) * PEsmpTOT + ip;
 			j0 = j1 - 1;
+			SMPindex_new[(ip - 1) * NCOLORtot + ic] = SMPindex[j1];
 			SMPindex[j1] += SMPindex[j0];
+		}
+	}
+	for(ip=1; ip<=PEsmpTOT; ip++) {
+		for(ic=1; ic<=NCOLORtot; ic++) {
+			j1 = (ip-1) * NCOLORtot + ic;
+			j0 = j1 - 1;
+			SMPindex_new[j1] += SMPindex_new[j0];
 		}
 	}
 

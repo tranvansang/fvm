@@ -7,6 +7,7 @@
 #include <errno.h>
 #include <math.h>
 
+#include "pcg_ext.h"
 #include "solver_ICCG_mc.h"
 
 extern int
@@ -87,6 +88,7 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 	for(L=0; L<(*ITR); L++) {
 
 /*******************
+ * Forward Substitution
  * {z} = [Minv]{r} *
  *******************/
 #pragma omp parallel for private(ip, i)
@@ -96,35 +98,63 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 			}
 		}
 
-#pragma omp parallel private (ic, ip, ip1, i, WVAL, j)
-		for(ic=0; ic<NCOLORtot; ic++) {
+#pragma omp parallel private (ic,ip,ip1,i,W V A L,j)
+			for(ic=0; ic<NCOLORtot; ic++) {
 #pragma omp for
-			for(ip=0; ip<PEsmpTOT; ip++) {
-				ip1 = ic * PEsmpTOT + ip;
-				for(i=SMPindex[ip1]; i<SMPindex[ip1+1]; i++) {
-					WVAL = W[Z][i];
-					for(j=indexL[i]; j<indexL[i+1]; j++) {
-						WVAL -= AL[j] * W[Z][itemL[j]-1];
+				for(ip=0; ip<PEsmpTOT; ip++) {
+					ip1 = ip * NCOLORtot + ic;
+					for(i=SMPindex[ip1]; i<SMPindex[ip1+1]; i++) {
+						WVAL = W[Z][i];
+						for(j=indexL[i]; j<indexL[i+1]; j++) {
+							WVAL -= AL[j] * W[Z][itemL[j]-1];
+						}
+						W[Z][i] = WVAL * W[DD][i];
 					}
-					W[Z][i] = WVAL * W[DD][i];
 				}
 			}
-		}
-
-#pragma omp parallel private (ic,ip, ip1, i, SW, j)
-		for(ic=NCOLORtot-1; ic>=0; ic--) {
+#pragma omp parallel private (ic,ip,ip1,i,W V A L,j)
+			for(ic=NCOLORtot - 1; ic >= 0; ic--) {
 #pragma omp for
-			for(ip=0; ip<PEsmpTOT; ip++) {
-				ip1 = ic * PEsmpTOT + ip;
-				for(i=SMPindex[ip1]; i<SMPindex[ip1+1]; i++) {
-					SW = 0.0;
-					for(j=indexU[i]; j<indexU[i+1]; j++) {
-						SW += AU[j] * W[Z][itemU[j]-1];
+				for(ip=0; ip<PEsmpTOT; ip++) {
+					ip1 = ip * NCOLORtot + ic;
+					for(i=SMPindex[ip1]; i<SMPindex[ip1+1]; i++) {
+						SW = 0.0;
+						for(j=indexU[i]; j<indexU[i+1]; j++) {
+							SW += AU[j] * W[Z][itemU[j]-1];
+						}
+						W[Z][i] -= SW * W[DD][i];
 					}
-					W[Z][i] -= W[DD][i] * SW;
 				}
 			}
-		}
+//#pragma omp parallel private (ic, ip, ip1, i, WVAL, j)
+//		for(ic=0; ic<NCOLORtot; ic++) {
+//#pragma omp for
+//			for(ip=0; ip<PEsmpTOT; ip++) {
+//				ip1 = ic * PEsmpTOT + ip;
+//				for(i=SMPindex[ip1]; i<SMPindex[ip1+1]; i++) {
+//					WVAL = W[Z][i];
+//					for(j=indexL[i]; j<indexL[i+1]; j++) {
+//						WVAL -= AL[j] * W[Z][itemL[j]-1];
+//					}
+//					W[Z][i] = WVAL * W[DD][i];
+//				}
+//			}
+//		}
+//
+//#pragma omp parallel private (ic,ip, ip1, i, SW, j)
+//		for(ic=NCOLORtot-1; ic>=0; ic--) {
+//#pragma omp for
+//			for(ip=0; ip<PEsmpTOT; ip++) {
+//				ip1 = ic * PEsmpTOT + ip;
+//				for(i=SMPindex[ip1]; i<SMPindex[ip1+1]; i++) {
+//					SW = 0.0;
+//					for(j=indexU[i]; j<indexU[i+1]; j++) {
+//						SW += AU[j] * W[Z][itemU[j]-1];
+//					}
+//					W[Z][i] -= W[DD][i] * SW;
+//				}
+//			}
+//		}
 
 /****************
  * RHO = {r}{z} *
@@ -159,21 +189,50 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 		}
 
 /****************
+ * Mat-Vec
  * {q} = [A]{p} *
  ****************/
-#pragma omp parallel for private (ip, i, VAL, j)
-		for(ip=0; ip<PEsmpTOT; ip++) {
-			for(i=SMPindexG[ip]; i<SMPindexG[ip+1]; i++) {
-				VAL = D[i] * W[P][i];
-				for(j=indexL[i]; j<indexL[i+1]; j++) {
-					VAL += AL[j] * W[P][itemL[j]-1];
+		if (METHOD == 0)
+#pragma omp parallel for private(ip,i)
+			for(ip=0; ip<PEsmpTOT; ip++) {
+				for(i=SMPindexG[ip]; i<SMPindexG[ip+1]; i++) {
+					VAL = D[i] * W[P][i];
+					for(j=indexL[i]; j<indexL[i+1]; j++) {
+						VAL += AL[j] * W[P][itemL[j]-1];
+					}
+					for(j=indexU[i]; j<indexU[i+1]; j++) {
+						VAL += AU[j] * W[P][itemU[j]-1];
+					}
+					W[Q][i] = VAL;
 				}
-				for(j=indexU[i]; j<indexU[i+1]; j++) {
-					VAL += AU[j] * W[P][itemU[j]-1];
-				}
-				W[Q][i] = VAL;
 			}
-		}
+		else
+#pragma ompp arallel for private (ip1,i,V A L,j)
+			for(ip=0; ip<PEsmpTOT; ip++) {
+				for(i=SMPindex[ip*NCOLORtot]; i<SMPindex[(ip+1)*NCOLORtot];i++){
+					VAL = D[i] * W[P][i];
+					for(j=indexL[i]; j<indexL[i+1]; j++) {
+						VAL += AL[j] * W[P][itemL[j]-1];
+					}
+					for(j=indexU[i]; j<indexU[i+1]; j++) {
+						VAL += AU[j] * W[P][itemU[j]-1];
+					}
+					W[Q][i] = VAL;
+				}
+			}
+//#pragma omp parallel for private (ip, i, VAL, j)
+//		for(ip=0; ip<PEsmpTOT; ip++) {
+//			for(i=SMPindexG[ip]; i<SMPindexG[ip+1]; i++) {
+//				VAL = D[i] * W[P][i];
+//				for(j=indexL[i]; j<indexL[i+1]; j++) {
+//					VAL += AL[j] * W[P][itemL[j]-1];
+//				}
+//				for(j=indexU[i]; j<indexU[i+1]; j++) {
+//					VAL += AU[j] * W[P][itemU[j]-1];
+//				}
+//				W[Q][i] = VAL;
+//			}
+//		}
 
 /************************
  * ALPHA = RHO / {p}{q} *
