@@ -16,7 +16,7 @@
         extern int *indexL, *indexU;
         extern int *indexLorg, *indexUorg;
         extern int *SMPindex, *SMPindexG, *SMPindex_new;
-        extern int *OLDtoNEW, *NEWtoOLD, *OLDtoNEWnew, *NEWtoOLDnew;
+        extern int *OLDtoNEW, *NEWtoOLD, *OLDtoNEWnew, *NEWtoOLDnew, *NEWNEWtoNEW;
 
         extern int **IAL, **IAU;
         extern int *itemL, *itemU;

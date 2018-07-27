@@ -15,8 +15,6 @@
 #include "poi_gen.h"
 #include "allocate.h"
 
-#define newnewTonew(x) (OLDtoNEW[NEWtoOLDnew[x] - 1] - 1)
-
 extern int
 POI_GEN(void)
 {
@@ -110,10 +108,12 @@ POI_GEN(void)
 	OLDtoNEWnew = (int *) allocate_vector(sizeof(int),ICELTOT);
 	NEWtoOLDnew = (int *) allocate_vector(sizeof(int),ICELTOT);
 	COLORindex = (int *) allocate_vector(sizeof(int),ICELTOT+1);
+	NEWNEWtoNEW = (int *) allocate_vector(sizeof(int),ICELTOT);
 
 	memset(OLDtoNEW, 0, sizeof(int)*ICELTOT);
 	memset(NEWtoOLD, 0, sizeof(int)*ICELTOT);
 	memset(OLDtoNEWnew, 0, sizeof(int)*ICELTOT);
+	memset(NEWNEWtoNEW, 0, sizeof(int)*ICELTOT);
 	memset(NEWtoOLDnew, 0, sizeof(int)*ICELTOT);
 	memset(COLORindex, 0, sizeof(int)*(ICELTOT+1));
 
@@ -203,6 +203,10 @@ N111:
 			}
 		}
 
+	for(icel = 0; icel < ICELTOT; icel++){
+		NEWNEWtoNEW[icel] = OLDtoNEW[NEWtoOLDnew[icel] - 1];
+	}
+
 	SMPindexG = (int *) allocate_vector(sizeof(int), PEsmpTOT+1);
         memset(SMPindexG, 0, sizeof(int)*(PEsmpTOT+1)); 
 
@@ -262,8 +266,6 @@ N111:
 				BFORCE[i] = 0.0;
 				D[i] = 0.0;
 				PHI[i] = 0.0;
-				indexL[i] = 0;
-				indexU[i] = 0;
 			}
 			for(i=0; i<NPL; i++) {
 				AL[i] = 0.0;
@@ -296,7 +298,6 @@ N111:
         free(INU);
         free(IAL);
         free(IAU);
-
 
 /*************************************
  * INTERIOR & NEUMANN BOUNDARY CELLs *
@@ -331,7 +332,7 @@ N111:
 				D[icel] -= coef;
 
 				//use colored index to identify cell location
-				if(newnewTonew(icN5-1) < newnewTonew(icel)) {
+				if(NEWNEWtoNEW[icN5-1] < NEWNEWtoNEW[icel]) {
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN5) {
 							AL[j] = coef;
@@ -353,7 +354,7 @@ N111:
 				coef = RDZ * YAREA;
 				D[icel] -= coef;
 
-				if(newnewTonew(icN3-1) < newnewTonew(icel)) {
+				if(NEWNEWtoNEW[icN3-1] < NEWNEWtoNEW[icel]) {
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN3) {
 							AL[j] = coef;
@@ -375,7 +376,7 @@ N111:
 				coef = RDZ * XAREA;
 				D[icel] -= coef;
 
-				if(newnewTonew(icN1-1) < newnewTonew(icel)) {
+				if(NEWNEWtoNEW[icN1-1] < NEWNEWtoNEW[icel]) {
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN1) {
 							AL[j] = coef;
@@ -397,7 +398,7 @@ N111:
 				coef = RDZ * XAREA;
 				D[icel] -= coef;
 
-				if(newnewTonew(icN2-1) < newnewTonew(icel)) {
+				if(NEWNEWtoNEW[icN2-1] < NEWNEWtoNEW[icel]) {
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN2) {
 							AL[j] = coef;
@@ -419,7 +420,7 @@ N111:
 				coef = RDZ * YAREA;
 				D[icel] -= coef;
 
-				if(newnewTonew(icN4-1) < newnewTonew(icel)) {
+				if(NEWNEWtoNEW[icN4-1] < NEWNEWtoNEW[icel]) {
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN4) {
 							AL[j] = coef;
@@ -441,7 +442,7 @@ N111:
 				coef = RDZ * ZAREA;
 				D[icel] -= coef;
 
-				if(newnewTonew(icN6-1) < newnewTonew(icel)) {
+				if(NEWNEWtoNEW[icN6-1] < NEWNEWtoNEW[icel]) {
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN6) {
 							AL[j] = coef;

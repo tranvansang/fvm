@@ -14,11 +14,11 @@ extern int
 solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *itemU,
 		double *D, double *B, double *X, double *AL, double *AU,
 		int NCOLORtot, int PEsmpTOT, int *SMPindex, int *SMPindexG,
-		double EPS, int *ITR, int *IER)
+		double EPS, int *ITR, int *IER, int *NEWNEWtoNew)
 {
 	double **W;
 	double VAL, BNRM2, WVAL, SW, RHO, BETA, RHO1, C1, DNRM2, ALPHA, ERR;
-	int i, j, ic, ip, L, ip1;
+	int i, j, ic, ip, L, ip1, ii;
 	int R = 0;
 	int Z = 1;
 	int Q = 1;
@@ -48,7 +48,8 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 			ip1 = ic + ip * NCOLORtot;
 			for(i=SMPindex_new[ip1]; i<SMPindex_new[ip1+1]; i++) {
 				VAL = D[i];
-				for(j=indexL[i]; j<indexL[i+1]; j++) {
+				ii = NEWNEWtoNew[i] - 1;
+				for(j=indexL[ii]; j<indexL[ii+1]; j++) {
 					VAL = VAL - AL[j]*AL[j] * W[DD][itemL[j] - 1];
 				}
 				W[DD][i] = 1.0 / VAL;
@@ -63,10 +64,12 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 	for(ip=0; ip<PEsmpTOT; ip++) {
 		for(i=SMPindexG[ip]; i<SMPindexG[ip+1]; i++) {
 			VAL = D[i] * X[i];
-			for(j=indexL[i]; j<indexL[i+1]; j++) {
+			ii = NEWNEWtoNew[i] - 1;
+			for(j=indexL[ii]; j<indexL[ii+1]; j++) {
 				VAL += AL[j] * X[itemL[j]-1];
 			}
-			for(j=indexU[i]; j<indexU[i+1]; j++) {
+			ii = NEWNEWtoNew[i] - 1;
+			for(j=indexU[ii]; j<indexU[ii+1]; j++) {
 				VAL += AU[j] * X[itemU[j]-1];
 			}
 			W[R][i] = B[i] - VAL;
@@ -84,7 +87,6 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 /************************************************************** ITERATION */
 	*ITR = N;
 
-	*ITR = 1;
 	for(L=0; L<(*ITR); L++) {
 
 /*******************
@@ -104,7 +106,8 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 					ip1 = ip * NCOLORtot + ic;
 					for(i=SMPindex_new[ip1]; i<SMPindex_new[ip1+1]; i++) {
 						WVAL = W[Z][i];
-						for(j=indexL[i]; j<indexL[i+1]; j++) {
+						ii = NEWNEWtoNew[i] - 1;
+						for(j=indexL[ii]; j<indexL[ii+1]; j++) {
 							WVAL -= AL[j] * W[Z][itemL[j]-1];
 						}
 						W[Z][i] = WVAL * W[DD][i];
@@ -117,7 +120,8 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 					ip1 = ip * NCOLORtot + ic;
 					for(i=SMPindex_new[ip1]; i<SMPindex_new[ip1+1]; i++) {
 						SW = 0.0;
-						for(j=indexU[i]; j<indexU[i+1]; j++) {
+						ii = NEWNEWtoNew[i] - 1;
+						for(j=indexU[ii]; j<indexU[ii+1]; j++) {
 							SW += AU[j] * W[Z][itemU[j]-1];
 						}
 						W[Z][i] -= SW * W[DD][i];
@@ -166,10 +170,12 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 			for(ip=0; ip<PEsmpTOT; ip++) {
 				for(i=SMPindexG[ip]; i<SMPindexG[ip+1]; i++) {
 					VAL = D[i] * W[P][i];
-					for(j=indexL[i]; j<indexL[i+1]; j++) {
+					ii = NEWNEWtoNew[i] - 1;
+					for(j=indexL[ii]; j<indexL[ii+1]; j++) {
 						VAL += AL[j] * W[P][itemL[j]-1];
 					}
-					for(j=indexU[i]; j<indexU[i+1]; j++) {
+					ii = NEWNEWtoNew[i] - 1;
+					for(j=indexU[ii]; j<indexU[ii+1]; j++) {
 						VAL += AU[j] * W[P][itemU[j]-1];
 					}
 					W[Q][i] = VAL;
@@ -180,10 +186,12 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 			for(ip=0; ip<PEsmpTOT; ip++) {
 				for(i=SMPindex_new[ip*NCOLORtot]; i<SMPindex_new[(ip+1)*NCOLORtot];i++){
 					VAL = D[i] * W[P][i];
-					for(j=indexL[i]; j<indexL[i+1]; j++) {
+					ii = NEWNEWtoNew[i] - 1;
+					for(j=indexL[ii]; j<indexL[ii+1]; j++) {
 						VAL += AL[j] * W[P][itemL[j]-1];
 					}
-					for(j=indexU[i]; j<indexU[i+1]; j++) {
+					ii = NEWNEWtoNew[i] - 1;
+					for(j=indexU[ii]; j<indexU[ii+1]; j++) {
 						VAL += AU[j] * W[P][itemU[j]-1];
 					}
 					W[Q][i] = VAL;

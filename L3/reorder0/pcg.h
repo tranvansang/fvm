@@ -16,7 +16,7 @@
 	int *indexL, *indexU;
 	int *indexLorg, *indexUorg;
 	int *SMPindex, *SMPindexG, *SMPindex_new;
-	int *OLDtoNEW, *NEWtoOLD, *OLDtoNEWnew, *NEWtoOLDnew;
+	int *OLDtoNEW, *NEWtoOLD, *OLDtoNEWnew, *NEWtoOLDnew, *NEWNEWtoNEW;
 
 	int **IAL, **IAU;
 	int *itemL, *itemU;
