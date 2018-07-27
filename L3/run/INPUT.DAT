@@ -1,7 +1,7 @@
 128 128 128                  NX/NY/NZ
-1.00e-0 1.00e-0 1.00e0        DX/DY/DZ
+1.00e-0 1.00e-0 1.00e-0        DX/DY/DZ
 1.0e-08                       OMEGA, EPSICCG
-16
--20                            NCOLORtot
+36
+-50                            NCOLORtot
 0
 0

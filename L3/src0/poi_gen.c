@@ -148,6 +148,9 @@ N111:
 				&NCOLORtot, COLORindex, NEWtoOLD, OLDtoNEW);
 		fprintf(stderr, "\n###  CMRCM\n");
 	}
+	for(i = 0; i < 10; i++){
+		fprintf(stderr, "old2new, new2old [%d] = %d, %d,\n", i, OLDtoNEW[i], NEWtoOLD[i]);
+	}
 
 	fprintf(stderr, "\n### FINAL COLOR NUMBER%8d\n\n", NCOLORtot);
 

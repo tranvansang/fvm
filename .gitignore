@@ -50,3 +50,9 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+L3/run/L3-rsol0
+L3/run/L3-sol0
+L3/run/core.*
+L3/run/test*
+

@@ -15,6 +15,8 @@
 #include "poi_gen.h"
 #include "allocate.h"
 
+#define newnewTonew(x) (OLDtoNEW[NEWtoOLDnew[x] - 1] - 1)
+
 extern int
 POI_GEN(void)
 {
@@ -22,6 +24,8 @@ POI_GEN(void)
 	int ic0, icN1, icN2, icN3, icN4, icN5, icN6;
 	int i, j, k, ib, ic, ip, icel, icou, icol, icouG;
 	int ii, jj, kk, nn1, num, nr, j0, j1;
+	int colored_index, original_index, sequential_index;
+	int color_block_index, seq_block_index, offset;
 	double coef, VOL0, S1t, E1t;
         int isL, ieL, isU, ieU;
 
@@ -37,69 +41,14 @@ POI_GEN(void)
         IAL = (int **)allocate_matrix(sizeof(int),ICELTOT,NL);
         IAU = (int **)allocate_matrix(sizeof(int),ICELTOT,NU);
 
-        indexL = (int *)allocate_vector(sizeof(int),ICELTOT+1);
-        indexU = (int *)allocate_vector(sizeof(int),ICELTOT+1);
+		for (i = 0; i <ICELTOT ; i++) {
+			INL[i] = 0;
+			INU[i] = 0;
+			for(j=0;j<6;j++){
+				IAL[i][j]=0;
+				IAU[i][j]=0;
+			}
 
-/*old code
-		if (NFLAG == 0) {
-			for (i = 0; i <ICELTOT ; i++) {
-				BFORCE[i]=0.0;
-				D[i]  =0.0;
-				PHI[i]=0.0;
-				INL[i] = 0;
-				INU[i] = 0;
-				for(j=0;j<6;j++){
-					IAL[i][j]=0;
-					IAU[i][j]=0;
-				}
-
-			}
-			for (i = 0; i <=ICELTOT ; i++) {
-				indexL[i] = 0;
-				indexU[i] = 0;
-			}
-		} else {
-		}
-*/
-
-		if(NFLAG == 0){
-			for(i=0; i<ICELTOT; i++) {
-				BFORCE[i] = 0.0;
-				D[i] = 0.0;
-				PHI[i] = 0.0;
-			}
-			for(i=0; i<=ICELTOT; i++) {
-				indexLnew[i] = indexLnew_org[i];
-				indexUnew[i] = indexUnew_org[i]; }
-			for(i=0; i<NPL; i++) {
-				itemLnew[i] = 0;
-				ALnew[i] = 0.0;
-			}
-			for(i=0; i<NPU; i++) {
-				itemUnew[i] = 0;
-				AUnew[i] = 0.0;
-			}
-		}else {
-			indexLnew[0]=0;
-			indexUnew[0]=0;
-#pragma omp parallel for private(ic el, j)
-			for(ip=1; ip<=PEsmpTOT; ip++){
-				for(icel = SMPindex_new[(ip-1)*NCOLORtot]+1; icel<=SMPindex_new[ip*NCOLORtot]; icel++){
-					BFORCE[icel-1] = 0.0;
-					PHI[icel-1] = 0.0;
-					D[icel-1] = 0.0;
-					indexLnew[icel]=indexLnew_org[icel];
-					indexUnew[icel]=indexUnew_org[icel];
-					for(j=indexLnew_org[icel-1];j<indexLnew_org[icel];j++){
-						itemLnew[j]=0;
-						ALnew[j] = 0.0;
-					}
-					for(j=indexUnew_org[icel-1];j<indexUnew_org[icel];j++){
-						itemUnew[j]=0;
-						AUnew[j] = 0.0;
-					}
-				}
-			}
 		}
 
 
@@ -158,10 +107,14 @@ POI_GEN(void)
 
 	OLDtoNEW = (int *) allocate_vector(sizeof(int),ICELTOT);
 	NEWtoOLD = (int *) allocate_vector(sizeof(int),ICELTOT);
+	OLDtoNEWnew = (int *) allocate_vector(sizeof(int),ICELTOT);
+	NEWtoOLDnew = (int *) allocate_vector(sizeof(int),ICELTOT);
 	COLORindex = (int *) allocate_vector(sizeof(int),ICELTOT+1);
 
 	memset(OLDtoNEW, 0, sizeof(int)*ICELTOT);
 	memset(NEWtoOLD, 0, sizeof(int)*ICELTOT);
+	memset(OLDtoNEWnew, 0, sizeof(int)*ICELTOT);
+	memset(NEWtoOLDnew, 0, sizeof(int)*ICELTOT);
 	memset(COLORindex, 0, sizeof(int)*(ICELTOT+1));
 
 N111:
@@ -236,6 +189,20 @@ N111:
 		}
 	}
 
+	//assign new index
+	for(ip = 1; ip <= PEsmpTOT; ip++)
+		for(ic = 1; ic <= NCOLORtot; ic++){
+			color_block_index = (ic-1) * PEsmpTOT + ip - 1;
+			seq_block_index = (ic-1) + (ip - 1) * NCOLORtot;
+			for(offset = 0; offset < SMPindex[color_block_index + 1] - SMPindex[color_block_index]; offset ++){
+				colored_index = SMPindex[color_block_index] + offset;
+				original_index = NEWtoOLD[colored_index] - 1;
+				sequential_index = SMPindex_new[seq_block_index] + offset;
+				NEWtoOLDnew[sequential_index] = original_index + 1;
+				OLDtoNEWnew[original_index] = sequential_index + 1;
+			}
+		}
+
 	SMPindexG = (int *) allocate_vector(sizeof(int), PEsmpTOT+1);
         memset(SMPindexG, 0, sizeof(int)*(PEsmpTOT+1)); 
 
@@ -256,8 +223,12 @@ N111:
 /********************************************
 * 1D ordering: indexL, indexU, itemL, itemU *
 *********************************************/
+	//first init data
+        indexL = (int *)allocate_vector(sizeof(int),ICELTOT+1);
+        indexU = (int *)allocate_vector(sizeof(int),ICELTOT+1);
 
-
+		indexL[0] = 0;
+		indexU[0] = 0;
         for(i=0; i<ICELTOT; i++){
                 indexL[i+1]=indexL[i]+INL[i];
                 indexU[i+1]=indexU[i]+INU[i];
@@ -275,22 +246,56 @@ N111:
 	memset(AL, 0.0, sizeof(double)*NPL);
 	memset(AU, 0.0, sizeof(double)*NPU);
 
-        for(i=0; i<ICELTOT; i++){
-                for(k=0;k<INL[i];k++){
-                        kk=k+indexL[i];
-                        itemL[kk]=IAL[i][k];
-                }
-                for(k=0;k<INU[i];k++){
-                        kk=k+indexU[i];
-                        itemU[kk]=IAU[i][k];
-                }
-        }
+		//copy data to each thread if NFLAG is ON
+		if(NFLAG == 0){
+			for(i=0; i<ICELTOT; i++){
+				for(k=0;k<INL[i];k++){
+					kk=k+indexL[i];
+					itemL[kk]=IAL[i][k];
+				}
+				for(k=0;k<INU[i];k++){
+					kk=k+indexU[i];
+					itemU[kk]=IAU[i][k];
+				}
+			}
+			for(i=0; i<ICELTOT; i++) {
+				BFORCE[i] = 0.0;
+				D[i] = 0.0;
+				PHI[i] = 0.0;
+				indexL[i] = 0;
+				indexU[i] = 0;
+			}
+			for(i=0; i<NPL; i++) {
+				AL[i] = 0.0;
+			}
+			for(i=0; i<NPU; i++) {
+				AU[i] = 0.0;
+			}
+		}else {
+#pragma omp parallel for private(icel, j)
+			for(ip=1; ip<=PEsmpTOT; ip++){
+				for(icel = SMPindex_new[(ip-1)*NCOLORtot]+1; icel<=SMPindex_new[ip*NCOLORtot]; icel++){
+					BFORCE[icel-1] = 0.0;
+					PHI[icel-1] = 0.0;
+					D[icel-1] = 0.0;
+					for(j=indexL[icel-1];j<indexL[icel];j++){
+						itemL[j]=0;
+						AL[j] = 0.0;
+					}
+					for(j=indexU[icel-1];j<indexU[icel];j++){
+						itemU[j]=0;
+						AU[j] = 0.0;
+					}
+				}
+			}
+		}
+
+
 
         free(INL);
         free(INU);
         free(IAL);
         free(IAU);
-
 
 
 /*************************************
@@ -300,7 +305,10 @@ N111:
 #pragma omp parallel for private (ip, icel, ic0, icN1, icN2, icN3, icN4, icN5, icN6, coef, j, ii, jj, kk, isL, ieL, isU, ieU)
 	for(ip=0; ip<PEsmpTOT; ip++) {
 		for(icel=SMPindexG[ip]; icel<SMPindexG[ip+1]; icel++) {
-			ic0  = NEWtoOLD[icel];
+			//icel: sequential index
+			//ic0: original index
+			//icN*: original index
+			ic0  = NEWtoOLDnew[icel];
 
 			icN1 = NEIBcell[ic0-1][0];
 			icN2 = NEIBcell[ic0-1][1];
@@ -317,11 +325,13 @@ N111:
                 	ieU =indexU[icel+1];
 
 			if(icN5 != 0) {
-				icN5 = OLDtoNEW[icN5-1];
+				icN5 = OLDtoNEWnew[icN5-1];
+				//icN*: sequential index
 				coef = RDZ * ZAREA;
 				D[icel] -= coef;
 
-				if(icN5-1 < icel) {
+				//use colored index to identify cell location
+				if(newnewTonew(icN5-1) < newnewTonew(icel)) {
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN5) {
 							AL[j] = coef;
@@ -339,11 +349,11 @@ N111:
 			}
 
 			if(icN3 != 0) {
-				icN3 = OLDtoNEW[icN3-1];
+				icN3 = OLDtoNEWnew[icN3-1];
 				coef = RDZ * YAREA;
 				D[icel] -= coef;
 
-				if(icN3-1 < icel) {
+				if(newnewTonew(icN3-1) < newnewTonew(icel)) {
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN3) {
 							AL[j] = coef;
@@ -361,11 +371,11 @@ N111:
 			}
 
 			if(icN1 != 0) {
-				icN1 = OLDtoNEW[icN1-1];
+				icN1 = OLDtoNEWnew[icN1-1];
 				coef = RDZ * XAREA;
 				D[icel] -= coef;
 
-				if(icN1-1 < icel) {
+				if(newnewTonew(icN1-1) < newnewTonew(icel)) {
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN1) {
 							AL[j] = coef;
@@ -383,11 +393,11 @@ N111:
 			}
 
 			if(icN2 != 0) {
-				icN2 = OLDtoNEW[icN2-1];
+				icN2 = OLDtoNEWnew[icN2-1];
 				coef = RDZ * XAREA;
 				D[icel] -= coef;
 
-				if(icN2-1 < icel) {
+				if(newnewTonew(icN2-1) < newnewTonew(icel)) {
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN2) {
 							AL[j] = coef;
@@ -405,11 +415,11 @@ N111:
 			}
 
 			if(icN4 != 0) {
-				icN4 = OLDtoNEW[icN4-1];
+				icN4 = OLDtoNEWnew[icN4-1];
 				coef = RDZ * YAREA;
 				D[icel] -= coef;
 
-				if(icN4-1 < icel) {
+				if(newnewTonew(icN4-1) < newnewTonew(icel)) {
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN4) {
 							AL[j] = coef;
@@ -427,11 +437,11 @@ N111:
 			}
 
 			if(icN6 != 0) {
-				icN6 = OLDtoNEW[icN6-1];
+				icN6 = OLDtoNEWnew[icN6-1];
 				coef = RDZ * ZAREA;
 				D[icel] -= coef;
 
-				if(icN6-1 < icel) {
+				if(newnewTonew(icN6-1) < newnewTonew(icel)) {
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN6) {
 							AL[j] = coef;
@@ -466,10 +476,9 @@ N111:
 	for(ib=0; ib<ZmaxCELtot; ib++) {
 		ic0  = ZmaxCEL[ib];
 		coef = 2.0 * RDZ * ZAREA;
-		icel = OLDtoNEW[ic0-1];
+		icel = OLDtoNEWnew[ic0-1];
 		D[icel-1] -= coef;
 	}
-
 
 	return 0;
 }

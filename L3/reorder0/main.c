@@ -32,7 +32,6 @@ main()
 	if(CELL_METRICS()) goto error;
 	if(POI_GEN()) goto error;
 
-
 /***************
  * MAIN SOLVER *
  ***************/
