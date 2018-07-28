@@ -14,13 +14,14 @@
 #include "cmrcm.h"
 #include "poi_gen.h"
 #include "allocate.h"
+#include "sequential.h"
 
 extern int
 POI_GEN(void)
 {
 	int nn;
 	int ic0, icN1, icN2, icN3, icN4, icN5, icN6;
-	int i, j, k, ib, ic, ip, icel, icou, icol, icouG;
+	int i, j, k, ib, ic, ip, icel, icou, icol, icouG, col_ind;
 	int ii, jj, kk, nn1, num, nr, j0, j1;
 	double coef, VOL0, S1t, E1t;
         int isL, ieL, isU, ieU;
@@ -165,16 +166,16 @@ N111:
 		nr  = nn1 - PEsmpTOT * num;
 		for(ip=1; ip<=PEsmpTOT; ip++) {
 			if(ip <= nr) {
-				SMPindex[(ic-1)*PEsmpTOT+ip] = num + 1;
+				SMPindex[ic+(ip - 1) * NCOLORtot] = num + 1;
 			} else {
-				SMPindex[(ic-1)*PEsmpTOT+ip] = num;
+				SMPindex[ic+(ip - 1) * NCOLORtot] = num;
 			}
 		}
 	}
 
-	for(ic=1; ic<=NCOLORtot; ic++) {
-		for(ip=1; ip<=PEsmpTOT; ip++) {
-			j1 = (ic-1) * PEsmpTOT + ip;
+	for(ip=1; ip<=PEsmpTOT; ip++) {
+		for(ic=1; ic<=NCOLORtot; ic++) {
+			j1 = ic + (ip - 1) * NCOLORtot;
 			j0 = j1 - 1;
 			SMPindex[j1] += SMPindex[j0];
 		}
@@ -203,8 +204,8 @@ N111:
 
 
         for(i=0; i<ICELTOT; i++){
-                indexL[i+1]=indexL[i]+INL[i];
-                indexU[i+1]=indexU[i]+INU[i];
+                indexL[i+1]=indexL[i]+INL[seq_to_col(i)];
+                indexU[i+1]=indexU[i]+INU[seq_to_col(i)];
         }
         NPL = indexL[ICELTOT];
         NPU = indexU[ICELTOT];
@@ -220,13 +221,13 @@ N111:
 	memset(AU, 0.0, sizeof(double)*NPU);
 
         for(i=0; i<ICELTOT; i++){
-                for(k=0;k<INL[i];k++){
+                for(k=0;k<INL[seq_to_col(i)];k++){
                         kk=k+indexL[i];
-                        itemL[kk]=IAL[i][k];
+                        itemL[kk]=col_to_seq(IAL[seq_to_col(i)][k] - 1) + 1;
                 }
-                for(k=0;k<INU[i];k++){
+                for(k=0;k<INU[seq_to_col(i)];k++){
                         kk=k+indexU[i];
-                        itemU[kk]=IAU[i][k];
+                        itemU[kk]=col_to_seq(IAU[seq_to_col(i)][k] - 1) + 1;
                 }
         }
 
@@ -244,7 +245,11 @@ N111:
 #pragma omp parallel for private (ip, icel, ic0, icN1, icN2, icN3, icN4, icN5, icN6, coef, j, ii, jj, kk, isL, ieL, isU, ieU)
 	for(ip=0; ip<PEsmpTOT; ip++) {
 		for(icel=SMPindexG[ip]; icel<SMPindexG[ip+1]; icel++) {
-			ic0  = NEWtoOLD[icel];
+			//icel: index after sequential ordering
+			//col_ind: index after coloring
+			//ic0: original index
+			col_ind = seq_to_col(icel);
+			ic0  = NEWtoOLD[col_ind];
 
 			icN1 = NEIBcell[ic0-1][0];
 			icN2 = NEIBcell[ic0-1][1];
@@ -265,7 +270,8 @@ N111:
 				coef = RDZ * ZAREA;
 				D[icel] -= coef;
 
-				if(icN5-1 < icel) {
+				if(icN5-1 < col_ind) {
+					icN5 = col_to_seq(icN5 - 1) + 1;
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN5) {
 							AL[j] = coef;
@@ -273,6 +279,7 @@ N111:
 						}
 					}
 				} else {
+					icN5 = col_to_seq(icN5 - 1) + 1;
 					for(j=isU; j<ieU; j++) {
 						if(itemU[j] == icN5) {
 							AU[j] = coef;
@@ -287,16 +294,18 @@ N111:
 				coef = RDZ * YAREA;
 				D[icel] -= coef;
 
-				if(icN3-1 < icel) {
-					for(j=isL; j<ieL; j++) {
-						if(itemL[j] == icN3) {
-							AL[j] = coef;
-							break;
-						}
-					}
-				} else {
-					for(j=isU; j<ieU; j++) {
-						if(itemU[j] == icN3) {
+        if(icN3-1 < col_ind) {
+          icN3 = col_to_seq(icN3 - 1) + 1;
+          for(j=isL; j<ieL; j++) {
+            if(itemL[j] == icN3) {
+              AL[j] = coef;
+              break;
+            }
+          }
+        } else {
+          icN3 = col_to_seq(icN3 - 1) + 1;
+          for(j=isU; j<ieU; j++) {
+            if(itemU[j] == icN3) {
 							AU[j] = coef;
 							break;
 						}
@@ -305,85 +314,93 @@ N111:
 			}
 
 			if(icN1 != 0) {
-				icN1 = OLDtoNEW[icN1-1];
-				coef = RDZ * XAREA;
-				D[icel] -= coef;
+        icN1 = OLDtoNEW[icN1-1];
+        coef = RDZ * XAREA;
+        D[icel] -= coef;
 
-				if(icN1-1 < icel) {
-					for(j=isL; j<ieL; j++) {
-						if(itemL[j] == icN1) {
-							AL[j] = coef;
-							break;
-						}
-					}
-				} else {
-					for(j=isU; j<ieU; j++) {
-						if(itemU[j] == icN1) {
-							AU[j] = coef;
-							break;
-						}
-					}
-				}
-			}
+        if(icN1-1 < col_ind) {
+          icN1 = col_to_seq(icN1 - 1) + 1;
+          for(j=isL; j<ieL; j++) {
+            if(itemL[j] == icN1) {
+              AL[j] = coef;
+              break;
+            }
+          }
+        } else {
+          icN1 = col_to_seq(icN1 - 1) + 1;
+          for(j=isU; j<ieU; j++) {
+            if(itemU[j] == icN1) {
+              AU[j] = coef;
+              break;
+            }
+          }
+        }
+      }
 
-			if(icN2 != 0) {
-				icN2 = OLDtoNEW[icN2-1];
-				coef = RDZ * XAREA;
-				D[icel] -= coef;
+      if(icN2 != 0) {
+        icN2 = OLDtoNEW[icN2-1];
+        coef = RDZ * XAREA;
+        D[icel] -= coef;
 
-				if(icN2-1 < icel) {
-					for(j=isL; j<ieL; j++) {
-						if(itemL[j] == icN2) {
-							AL[j] = coef;
-							break;
-						}
-					}
-				} else {
-					for(j=isU; j<ieU; j++) {
-						if(itemU[j] == icN2) {
-							AU[j] = coef;
-							break;
-						}
-					}
-				}
-			}
+        if(icN2-1 < col_ind) {
+          icN2 = col_to_seq(icN2 - 1) + 1;
+          for(j=isL; j<ieL; j++) {
+            if(itemL[j] == icN2) {
+              AL[j] = coef;
+              break;
+            }
+          }
+        } else {
+          icN2 = col_to_seq(icN2 - 1) + 1;
+          for(j=isU; j<ieU; j++) {
+            if(itemU[j] == icN2) {
+              AU[j] = coef;
+              break;
+            }
+          }
+        }
+      }
 
-			if(icN4 != 0) {
-				icN4 = OLDtoNEW[icN4-1];
-				coef = RDZ * YAREA;
-				D[icel] -= coef;
+      if(icN4 != 0) {
+        icN4 = OLDtoNEW[icN4-1];
+        coef = RDZ * YAREA;
+        D[icel] -= coef;
 
-				if(icN4-1 < icel) {
-					for(j=isL; j<ieL; j++) {
-						if(itemL[j] == icN4) {
-							AL[j] = coef;
-							break;
-						}
-					}
-				} else {
-					for(j=isU; j<ieU; j++) {
-						if(itemU[j] == icN4) {
-							AU[j] = coef;
-							break;
-						}
-					}
-				}
-			}
+        if(icN4-1 < col_ind) {
+          icN4 = col_to_seq(icN4 - 1) + 1;
+          for(j=isL; j<ieL; j++) {
+            if(itemL[j] == icN4) {
+              AL[j] = coef;
+              break;
+            }
+          }
+        } else {
+          icN4 = col_to_seq(icN4 - 1) + 1;
+          for(j=isU; j<ieU; j++) {
+            if(itemU[j] == icN4) {
+              AU[j] = coef;
+              break;
+            }
+          }
+        }
+      }
 
-			if(icN6 != 0) {
-				icN6 = OLDtoNEW[icN6-1];
-				coef = RDZ * ZAREA;
-				D[icel] -= coef;
+      if(icN6 != 0) {
+        icN6 = OLDtoNEW[icN6-1];
+        coef = RDZ * ZAREA;
+        D[icel] -= coef;
 
-				if(icN6-1 < icel) {
-					for(j=isL; j<ieL; j++) {
-						if(itemL[j] == icN6) {
-							AL[j] = coef;
-							break;
-						}
-					}
-				} else {
-					for(j=isU; j<ieU; j++) {
+        if(icN6-1 < col_ind) {
+          icN6 = col_to_seq(icN6 - 1) + 1;
+          for(j=isL; j<ieL; j++) {
+            if(itemL[j] == icN6) {
+              AL[j] = coef;
+              break;
+            }
+          }
+        } else {
+          icN6 = col_to_seq(icN6 - 1) + 1;
+          for(j=isU; j<ieU; j++) {
 						if(itemU[j] == icN6) {
 							AU[j] = coef;
 							break;

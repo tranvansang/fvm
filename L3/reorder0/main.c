@@ -12,6 +12,7 @@
 #include "poi_gen.h"
 #include "solver_ICCG_mc.h"
 #include "outucd.h"
+#include "sequential.h"
 
 int
 main()
@@ -57,7 +58,7 @@ main()
 	fprintf(stderr, "%16.6e sec. (solver)\n", Etime - Stime);
 
 	for(ic0=0; ic0<ICELTOT; ic0++) {
-		icel = NEWtoOLD[ic0];
+		icel = NEWtoOLD[seq_to_col(ic0)];
 		WK[icel-1] = PHI[ic0];
 	}
 

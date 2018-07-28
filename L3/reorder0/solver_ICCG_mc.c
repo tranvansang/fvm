@@ -8,6 +8,7 @@
 #include <math.h>
 
 #include "solver_ICCG_mc.h"
+#include "allocate.h"
 
 extern int
 solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *itemU,
