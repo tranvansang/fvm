@@ -4,7 +4,6 @@
 	static int N2 = 256;
 	int NUmax, NLmax, NCOLORtot, NCOLORk, NU, NL;
 	int METHOD, ORDER_METHOD;
-	int NFLAG;
 
 	double EPSICCG;
 
@@ -15,8 +14,8 @@
 	int *INL, *INU, *COLORindex;
 	int *indexL, *indexU;
 	int *indexLorg, *indexUorg;
-	int *SMPindex, *SMPindexG, *SMPindex_new;
-	int *OLDtoNEW, *NEWtoOLD, *OLDtoNEWnew, *NEWtoOLDnew, *NEWNEWtoNEW;
+	int *SMPindex, *SMPindexG;
+	int *OLDtoNEW, *NEWtoOLD;
 
 	int **IAL, **IAU;
 	int *itemL, *itemU;

@@ -106,7 +106,7 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 					for(j=indexL[i]; j<indexL[i+1]; j++) {
 						WVAL -= AL[j] * W[Z][itemL[j]-1];
 					}
-						W[Z][i] = WVAL * W[DD][i];
+					W[Z][i] = WVAL * W[DD][i];
 				}
 			}
 		}

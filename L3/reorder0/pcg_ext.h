@@ -4,7 +4,6 @@
 	extern int N2;
 	extern int NUmax, NLmax, NCOLORtot, NCOLORk, NU, NL;
 	extern int METHOD, ORDER_METHOD;
-	extern int NFLAG;
 
 	extern double EPSICCG;
 
@@ -15,8 +14,8 @@
         extern int *INL, *INU, *COLORindex;
         extern int *indexL, *indexU;
         extern int *indexLorg, *indexUorg;
-        extern int *SMPindex, *SMPindexG, *SMPindex_new;
-        extern int *OLDtoNEW, *NEWtoOLD, *OLDtoNEWnew, *NEWtoOLDnew, *NEWNEWtoNEW;
+        extern int *SMPindex, *SMPindexG;
+        extern int *OLDtoNEW, *NEWtoOLD;
 
         extern int **IAL, **IAU;
         extern int *itemL, *itemU;

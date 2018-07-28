@@ -1,7 +1,6 @@
 CC        = icc
 OPTFLAGS= -O3 -qopenmp -ipo -xCORE-AVX2 -align
 TARGET    = ../run/L3-rsol0
-CFLAGS = -g -D__PURE_INTEL_C99_HEADERS__
 
 .SUFFIXES:
 .SUFFIXES: .o .c 

@@ -56,3 +56,5 @@ L3/run/L3-sol0
 L3/run/core.*
 L3/run/test*
 
+.idea/
+cmake-build-debug/

@@ -32,6 +32,7 @@ main()
 	if(CELL_METRICS()) goto error;
 	if(POI_GEN()) goto error;
 
+
 /***************
  * MAIN SOLVER *
  ***************/
@@ -49,7 +50,7 @@ main()
 	Stime = omp_get_wtime();
 	if(solve_ICCG_mc(ICELTOT, NL, NU, indexL, itemL, indexU, itemU,
 		D, BFORCE, PHI, AL, AU, NCOLORtot, PEsmpTOT,
-		SMPindex, SMPindexG, EPSICCG, &ITR, &IER, NEWNEWtoNEW)) goto error;
+		SMPindex, SMPindexG, EPSICCG, &ITR, &IER)) goto error;
 	Etime = omp_get_wtime();
 
 	fprintf(stderr, "\nN= %10d\n", ICELTOT);
