@@ -3,7 +3,7 @@
 
 	static int N2 = 256;
 	int NUmax, NLmax, NCOLORtot, NCOLORk, NU, NL;
-	int METHOD, ORDER_METHOD;
+	int METHOD, ORDER_METHOD, NFLAG;
 
 	double EPSICCG;
 

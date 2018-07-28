@@ -3,7 +3,7 @@
 
 	extern int N2;
 	extern int NUmax, NLmax, NCOLORtot, NCOLORk, NU, NL;
-	extern int METHOD, ORDER_METHOD;
+	extern int METHOD, ORDER_METHOD, NFLAG;
 
 	extern double EPSICCG;
 
@@ -21,9 +21,9 @@
         extern int **IAL, **IAU;
         extern int *itemL, *itemU;
         extern int *itemLorg, *itemUorg;
-     
+
         extern int NPL, NPU;
 
-	
+
 
 #endif /* __H_PCG_EXT */

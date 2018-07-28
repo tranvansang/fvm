@@ -41,9 +41,6 @@ POI_GEN(void)
         indexU = (int *)allocate_vector(sizeof(int),ICELTOT+1);
 
         for (i = 0; i <ICELTOT ; i++) {
-		BFORCE[i]=0.0;
-		D[i]  =0.0;
-		PHI[i]=0.0;
         	INL[i] = 0;
         	INU[i] = 0;
         	for(j=0;j<6;j++){
@@ -52,10 +49,6 @@ POI_GEN(void)
 		}
 		
         }
-        for (i = 0; i <=ICELTOT ; i++) {
-		indexL[i] = 0;
-		indexU[i] = 0;
-	}
 
 
 /*********************************
@@ -221,11 +214,27 @@ N111:
 		SMPindexG[ip] += SMPindexG[ip-1];
 	}
 
+/********************************************
+* First touch data placement (1)
+ ********************************************/
 
+	if (NFLAG == 0) {
+		for (i = 0; i <=ICELTOT ; i++) {
+			indexL[i] = 0;
+			indexU[i] = 0;
+		}
+	}else {
+#pragma omp parallel for private (icel)
+		for(ip=0; ip<PEsmpTOT; ip++) {
+			for (icel = SMPindex[ip * NCOLORtot]; icel < SMPindexG[(ip + 1) * NCOLORtot]; icel++) {
+				indexL[icel] = 0;
+				indexU[icel] = 0;
+			}
+		}
+	}
 /********************************************
 * 1D ordering: indexL, indexU, itemL, itemU *
 *********************************************/
-
 
         for(i=0; i<ICELTOT; i++){
                 indexL[i+1]=indexL[i]+INL[SEQtoCOL[i] - 1];
@@ -239,11 +248,45 @@ N111:
         AL    = (double *)allocate_vector(sizeof(double),NPL);
         AU    = (double *)allocate_vector(sizeof(double),NPU);
 
-	memset(itemL, 0, sizeof(int)*NPL);
-	memset(itemU, 0, sizeof(int)*NPU);
-	memset(AL, 0.0, sizeof(double)*NPL);
-	memset(AU, 0.0, sizeof(double)*NPU);
+/********************************************
+* First touch data placement (2) BEGIN
+ ********************************************/
 
+	if (NFLAG == 0) {
+		for (i = 0; i <ICELTOT ; i++) {
+			BFORCE[i]=0.0;
+			D[i]  =0.0;
+			PHI[i]=0.0;
+		}
+		for(i = 0; i < NPL; i++){
+			itemL[i] = 0;
+			AL[i] = 0.0;
+		}
+		for(i = 0; i < NPU; i++){
+			itemU[i] = 0;
+			AU[i] = 0.0;
+		}
+	}else {
+#pragma omp parallel for private (icel, i)
+		for(ip=0; ip<PEsmpTOT; ip++) {
+			for (icel = SMPindex[ip * NCOLORtot]; icel < SMPindexG[(ip + 1) * NCOLORtot]; icel++) {
+				BFORCE[icel] = 0.0;
+				D[icel] = 0.0;
+				PHI[icel] = 0.0;
+			}
+			for(i = indexL[icel]; i < indexL[icel + 1]; i++){
+				itemL[i] = 0;
+				AL[i] = 0.0;
+			}
+			for(i = indexU[icel]; i < indexU[icel + 1]; i++){
+				itemU[i] = 0;
+				AU[i] = 0.0;
+			}
+		}
+	}
+/********************************************
+* First touch data placement (2) END
+ ********************************************/
         for(i=0; i<ICELTOT; i++){
                 for(k=0;k<INL[SEQtoCOL[i] - 1];k++){
                         kk=k+indexL[i];

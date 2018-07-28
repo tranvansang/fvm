@@ -37,7 +37,9 @@ INPUT(void)
 	sscanf(line, "%d", &PEsmpTOT);
 	fgets(line, BUF_SIZE, fp11);
 	sscanf(line, "%d", &NCOLORtot);
-	
+	fgets(line, BUF_SIZE, fp11);
+	sscanf(line, "%d", &NFLAG);
+
 	fprintf(stderr, "\n### THREAD number=%8d\n", PEsmpTOT);
 
 	fclose(fp11);
