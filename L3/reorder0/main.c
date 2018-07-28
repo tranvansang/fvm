@@ -12,7 +12,6 @@
 #include "poi_gen.h"
 #include "solver_ICCG_mc.h"
 #include "outucd.h"
-#include "sequential.h"
 
 int
 main()
@@ -51,14 +50,14 @@ main()
 	Stime = omp_get_wtime();
 	if(solve_ICCG_mc(ICELTOT, NL, NU, indexL, itemL, indexU, itemU,
 		D, BFORCE, PHI, AL, AU, NCOLORtot, PEsmpTOT,
-		SMPindex, SMPindexG, EPSICCG, &ITR, &IER)) goto error;
+		SMPindexSEQ, SMPindexG, EPSICCG, &ITR, &IER)) goto error;
 	Etime = omp_get_wtime();
 
 	fprintf(stderr, "\nN= %10d\n", ICELTOT);
 	fprintf(stderr, "%16.6e sec. (solver)\n", Etime - Stime);
 
 	for(ic0=0; ic0<ICELTOT; ic0++) {
-		icel = NEWtoOLD[seq_to_col(ic0)];
+		icel = NEWtoOLD[SEQtoCOL[ic0] - 1];
 		WK[icel-1] = PHI[ic0];
 	}
 

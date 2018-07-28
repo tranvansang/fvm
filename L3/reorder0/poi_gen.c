@@ -14,7 +14,6 @@
 #include "cmrcm.h"
 #include "poi_gen.h"
 #include "allocate.h"
-#include "sequential.h"
 
 extern int
 POI_GEN(void)
@@ -158,7 +157,14 @@ N111:
 ***********************/
 
 	SMPindex = (int *) allocate_vector(sizeof(int), NCOLORtot*PEsmpTOT+1);
-        memset(SMPindex, 0, sizeof(int)*(NCOLORtot*PEsmpTOT+1)); 
+        memset(SMPindex, 0, sizeof(int)*(NCOLORtot*PEsmpTOT+1));
+	SMPindexSEQ = (int *) allocate_vector(sizeof(int), NCOLORtot*PEsmpTOT+1);
+	SEQtoCOL = (int *) allocate_vector(sizeof(int),ICELTOT);
+	COLtoSEQ = (int *) allocate_vector(sizeof(int),ICELTOT);
+
+	memset(SMPindexSEQ, 0, sizeof(int)*(NCOLORtot*PEsmpTOT+1));
+	memset(SEQtoCOL, 0, sizeof(int) * ICELTOT);
+	memset(COLtoSEQ, 0, sizeof(int) * ICELTOT);
 
 	for(ic=1; ic<=NCOLORtot; ic++) {
 		nn1 = COLORindex[ic] - COLORindex[ic-1];
@@ -166,10 +172,20 @@ N111:
 		nr  = nn1 - PEsmpTOT * num;
 		for(ip=1; ip<=PEsmpTOT; ip++) {
 			if(ip <= nr) {
-				SMPindex[ic+(ip - 1) * NCOLORtot] = num + 1;
+				SMPindex[(ic-1)*PEsmpTOT+ip] = num + 1;
+				SMPindexSEQ[ic+(ip - 1) * NCOLORtot] = num + 1;
 			} else {
-				SMPindex[ic+(ip - 1) * NCOLORtot] = num;
+				SMPindex[(ic-1)*PEsmpTOT+ip] = num;
+				SMPindexSEQ[ic+(ip - 1) * NCOLORtot] = num;
 			}
+		}
+	}
+
+	for(ic=1; ic<=NCOLORtot; ic++) {
+		for(ip=1; ip<=PEsmpTOT; ip++) {
+			j1 = (ic-1) * PEsmpTOT + ip;
+			j0 = j1 - 1;
+			SMPindex[j1] += SMPindex[j0];
 		}
 	}
 
@@ -177,7 +193,15 @@ N111:
 		for(ic=1; ic<=NCOLORtot; ic++) {
 			j1 = ic + (ip - 1) * NCOLORtot;
 			j0 = j1 - 1;
-			SMPindex[j1] += SMPindex[j0];
+			SMPindexSEQ[j1] += SMPindexSEQ[j0];
+
+			//map new index
+			jj = (ic-1) * PEsmpTOT + ip - 1;
+			for(k = SMPindexSEQ[j0]; k < SMPindexSEQ[j1]; k++){
+				col_ind = k - SMPindexSEQ[j0] + SMPindex[jj];
+				SEQtoCOL[k] = col_ind + 1;
+				COLtoSEQ[col_ind] = k + 1;
+			}
 		}
 	}
 
@@ -204,8 +228,8 @@ N111:
 
 
         for(i=0; i<ICELTOT; i++){
-                indexL[i+1]=indexL[i]+INL[seq_to_col(i)];
-                indexU[i+1]=indexU[i]+INU[seq_to_col(i)];
+                indexL[i+1]=indexL[i]+INL[SEQtoCOL[i] - 1];
+                indexU[i+1]=indexU[i]+INU[SEQtoCOL[i] - 1];
         }
         NPL = indexL[ICELTOT];
         NPU = indexU[ICELTOT];
@@ -221,13 +245,13 @@ N111:
 	memset(AU, 0.0, sizeof(double)*NPU);
 
         for(i=0; i<ICELTOT; i++){
-                for(k=0;k<INL[seq_to_col(i)];k++){
+                for(k=0;k<INL[SEQtoCOL[i] - 1];k++){
                         kk=k+indexL[i];
-                        itemL[kk]=col_to_seq(IAL[seq_to_col(i)][k] - 1) + 1;
+                        itemL[kk]=COLtoSEQ[IAL[SEQtoCOL[i] - 1][k] - 1];
                 }
-                for(k=0;k<INU[seq_to_col(i)];k++){
+                for(k=0;k<INU[SEQtoCOL[i] - 1];k++){
                         kk=k+indexU[i];
-                        itemU[kk]=col_to_seq(IAU[seq_to_col(i)][k] - 1) + 1;
+                        itemU[kk]=COLtoSEQ[IAU[SEQtoCOL[i] - 1][k] - 1];
                 }
         }
 
@@ -242,13 +266,13 @@ N111:
  * INTERIOR & NEUMANN BOUNDARY CELLs *
  *************************************/
 	S1t = omp_get_wtime();
-#pragma omp parallel for private (ip, icel, ic0, icN1, icN2, icN3, icN4, icN5, icN6, coef, j, ii, jj, kk, isL, ieL, isU, ieU)
+#pragma omp parallel for private (ip, icel, ic0, icN1, icN2, icN3, icN4, icN5, icN6, coef, j, ii, jj, kk, isL, ieL, isU, ieU, col_ind)
 	for(ip=0; ip<PEsmpTOT; ip++) {
 		for(icel=SMPindexG[ip]; icel<SMPindexG[ip+1]; icel++) {
 			//icel: index after sequential ordering
 			//col_ind: index after coloring
 			//ic0: original index
-			col_ind = seq_to_col(icel);
+			col_ind = SEQtoCOL[icel] - 1;
 			ic0  = NEWtoOLD[col_ind];
 
 			icN1 = NEIBcell[ic0-1][0];
@@ -271,7 +295,7 @@ N111:
 				D[icel] -= coef;
 
 				if(icN5-1 < col_ind) {
-					icN5 = col_to_seq(icN5 - 1) + 1;
+					icN5 = COLtoSEQ[icN5 - 1];
 					for(j=isL; j<ieL; j++) {
 						if(itemL[j] == icN5) {
 							AL[j] = coef;
@@ -279,7 +303,7 @@ N111:
 						}
 					}
 				} else {
-					icN5 = col_to_seq(icN5 - 1) + 1;
+					icN5 = COLtoSEQ[icN5 - 1];
 					for(j=isU; j<ieU; j++) {
 						if(itemU[j] == icN5) {
 							AU[j] = coef;
@@ -295,7 +319,7 @@ N111:
 				D[icel] -= coef;
 
         if(icN3-1 < col_ind) {
-          icN3 = col_to_seq(icN3 - 1) + 1;
+          icN3 = COLtoSEQ[icN3 - 1];
           for(j=isL; j<ieL; j++) {
             if(itemL[j] == icN3) {
               AL[j] = coef;
@@ -303,7 +327,7 @@ N111:
             }
           }
         } else {
-          icN3 = col_to_seq(icN3 - 1) + 1;
+          icN3 = COLtoSEQ[icN3 - 1];
           for(j=isU; j<ieU; j++) {
             if(itemU[j] == icN3) {
 							AU[j] = coef;
@@ -319,7 +343,7 @@ N111:
         D[icel] -= coef;
 
         if(icN1-1 < col_ind) {
-          icN1 = col_to_seq(icN1 - 1) + 1;
+          icN1 = COLtoSEQ[icN1 - 1];
           for(j=isL; j<ieL; j++) {
             if(itemL[j] == icN1) {
               AL[j] = coef;
@@ -327,7 +351,7 @@ N111:
             }
           }
         } else {
-          icN1 = col_to_seq(icN1 - 1) + 1;
+          icN1 = COLtoSEQ[icN1 - 1];
           for(j=isU; j<ieU; j++) {
             if(itemU[j] == icN1) {
               AU[j] = coef;
@@ -343,7 +367,7 @@ N111:
         D[icel] -= coef;
 
         if(icN2-1 < col_ind) {
-          icN2 = col_to_seq(icN2 - 1) + 1;
+          icN2 = COLtoSEQ[icN2 - 1];
           for(j=isL; j<ieL; j++) {
             if(itemL[j] == icN2) {
               AL[j] = coef;
@@ -351,7 +375,7 @@ N111:
             }
           }
         } else {
-          icN2 = col_to_seq(icN2 - 1) + 1;
+          icN2 = COLtoSEQ[icN2 - 1];
           for(j=isU; j<ieU; j++) {
             if(itemU[j] == icN2) {
               AU[j] = coef;
@@ -367,7 +391,7 @@ N111:
         D[icel] -= coef;
 
         if(icN4-1 < col_ind) {
-          icN4 = col_to_seq(icN4 - 1) + 1;
+          icN4 = COLtoSEQ[icN4 - 1];
           for(j=isL; j<ieL; j++) {
             if(itemL[j] == icN4) {
               AL[j] = coef;
@@ -375,7 +399,7 @@ N111:
             }
           }
         } else {
-          icN4 = col_to_seq(icN4 - 1) + 1;
+          icN4 = COLtoSEQ[icN4 - 1];
           for(j=isU; j<ieU; j++) {
             if(itemU[j] == icN4) {
               AU[j] = coef;
@@ -391,7 +415,7 @@ N111:
         D[icel] -= coef;
 
         if(icN6-1 < col_ind) {
-          icN6 = col_to_seq(icN6 - 1) + 1;
+          icN6 = COLtoSEQ[icN6 - 1];
           for(j=isL; j<ieL; j++) {
             if(itemL[j] == icN6) {
               AL[j] = coef;
@@ -399,7 +423,7 @@ N111:
             }
           }
         } else {
-          icN6 = col_to_seq(icN6 - 1) + 1;
+          icN6 = COLtoSEQ[icN6 - 1];
           for(j=isU; j<ieU; j++) {
 						if(itemU[j] == icN6) {
 							AU[j] = coef;
@@ -427,7 +451,7 @@ N111:
 	for(ib=0; ib<ZmaxCELtot; ib++) {
 		ic0  = ZmaxCEL[ib];
 		coef = 2.0 * RDZ * ZAREA;
-		icel = col_to_seq(OLDtoNEW[ic0-1] - 1) + 1;
+		icel = COLtoSEQ[OLDtoNEW[ic0-1] - 1];
 		D[icel-1] -= coef;
 	}
 

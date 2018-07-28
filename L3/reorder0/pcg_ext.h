@@ -14,8 +14,9 @@
         extern int *INL, *INU, *COLORindex;
         extern int *indexL, *indexU;
         extern int *indexLorg, *indexUorg;
-        extern int *SMPindex, *SMPindexG;
+        extern int *SMPindex, *SMPindexG, *SMPindexSEQ;
         extern int *OLDtoNEW, *NEWtoOLD;
+        extern int *SEQtoCOL, *COLtoSEQ;
 
         extern int **IAL, **IAU;
         extern int *itemL, *itemU;

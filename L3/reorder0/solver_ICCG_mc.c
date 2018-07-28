@@ -12,9 +12,9 @@
 
 extern int
 solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *itemU,
-		double *D, double *B, double *X, double *AL, double *AU,
-		int NCOLORtot, int PEsmpTOT, int *SMPindex, int *SMPindexG,
-		double EPS, int *ITR, int *IER)
+			  double *D, double *B, double *X, double *AL, double *AU,
+			  int NCOLORtot, int PEsmpTOT, int *SMPindex, int *SMPindexG,
+			  double EPS, int *ITR, int *IER)
 {
 	double **W;
 	double VAL, BNRM2, WVAL, SW, RHO, BETA, RHO1, C1, DNRM2, ALPHA, ERR;
@@ -29,7 +29,7 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
  * INIT. *
  *********/
 
-        W = (double **)allocate_matrix(sizeof(double *), 4, N+128);
+	W = (double **)allocate_matrix(sizeof(double *), 4, N+128);
 
 #pragma omp parallel for private (ip, i)
 	for(ip=0; ip<PEsmpTOT; ip++) {
@@ -46,7 +46,7 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 	for(ic=0; ic<NCOLORtot; ic++) {
 #pragma omp for
 		for(ip=0; ip<PEsmpTOT; ip++) {
-			ip1 = ic * PEsmpTOT + ip;
+			ip1 = ic + ip * NCOLORtot;
 			for(i=SMPindex[ip1]; i<SMPindex[ip1+1]; i++) {
 				VAL = D[i];
 				for(j=indexL[i]; j<indexL[i+1]; j++) {
@@ -101,7 +101,7 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 		for(ic=0; ic<NCOLORtot; ic++) {
 #pragma omp for
 			for(ip=0; ip<PEsmpTOT; ip++) {
-				ip1 = ic * PEsmpTOT + ip;
+				ip1 = ic + ip * NCOLORtot;
 				for(i=SMPindex[ip1]; i<SMPindex[ip1+1]; i++) {
 					WVAL = W[Z][i];
 					for(j=indexL[i]; j<indexL[i+1]; j++) {
@@ -116,7 +116,7 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 		for(ic=NCOLORtot-1; ic>=0; ic--) {
 #pragma omp for
 			for(ip=0; ip<PEsmpTOT; ip++) {
-				ip1 = ic * PEsmpTOT + ip;
+				ip1 = ic + ip * NCOLORtot;
 				for(i=SMPindex[ip1]; i<SMPindex[ip1+1]; i++) {
 					SW = 0.0;
 					for(j=indexU[i]; j<indexU[i+1]; j++) {
@@ -211,14 +211,14 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 #pragma omp parallel for private (ip, i) reduction (+:DNRM2)
 		for(ip=0; ip<PEsmpTOT; ip++) {
 			for(i=SMPindexG[ip]; i<SMPindexG[ip+1]; i++) {
-			  DNRM2 += W[R][i]*W[R][i];
+				DNRM2 += W[R][i]*W[R][i];
 			}
 		}
 
 		ERR = sqrt(DNRM2/BNRM2);
-                if( (L+1)%100 ==1) {
-                        fprintf(stderr, "%5d%16.6e\n", L+1, ERR);
-                }
+		if( (L+1)%100 ==1) {
+			fprintf(stderr, "%5d%16.6e\n", L+1, ERR);
+		}
 
 		if(ERR < EPS) {
 			*IER = 0;
@@ -229,7 +229,7 @@ solve_ICCG_mc(int N, int NL, int NU, int *indexL, int *itemL, int *indexU, int *
 	}
 	*IER = 1;
 
-N900:
+	N900:
 	fprintf(stderr, "%5d%16.6e\n", L+1, ERR);
 	*ITR = L;
 

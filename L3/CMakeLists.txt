@@ -27,11 +27,10 @@ add_executable(reorder0
         reorder0/cm.c
         reorder0/rcm.c
         reorder0/cmrcm.c
-        reorder0/sequential.c
         reorder0/poi_gen.c
         reorder0/solver_ICCG_mc.c
         reorder0/outucd.c
         reorder0/allocate.c
         reorder0/allocate.h       reorder0/cell_metrics.h  reorder0/cmrcm.h  reorder0/mc.h      reorder0/pcg_ext.h  reorder0/poi_gen.h       reorder0/rcm.h         reorder0/solver_ICCG_mc.h  reorder0/struct.h
-        reorder0/boundary_cell.h  reorder0/cm.h            reorder0/input.h  reorder0/outucd.h  reorder0/pcg.h      reorder0/pointer_init.h  reorder0/sequential.h  reorder0/struct_ext.h
+        reorder0/boundary_cell.h  reorder0/cm.h            reorder0/input.h  reorder0/outucd.h  reorder0/pcg.h      reorder0/pointer_init.h reorder0/struct_ext.h
         reorder0/main.c )

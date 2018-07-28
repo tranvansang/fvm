@@ -14,8 +14,9 @@
 	int *INL, *INU, *COLORindex;
 	int *indexL, *indexU;
 	int *indexLorg, *indexUorg;
-	int *SMPindex, *SMPindexG;
+	int *SMPindex, *SMPindexG, *SMPindexSEQ;
 	int *OLDtoNEW, *NEWtoOLD;
+	int *SEQtoCOL, *COLtoSEQ;
 
 	int **IAL, **IAU;
 	int *itemL, *itemU;
