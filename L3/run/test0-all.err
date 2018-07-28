@@ -1,0 +1,1080 @@
+
+### THREAD number=       1
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    6.537422e+00 sec. (assemble)
+    1    1.997927e+01
+  101    8.292278e+00
+  201    6.582781e-01
+  301    1.315292e-02
+  401    1.685733e-04
+  501    2.433668e-06
+  601    2.317842e-08
+  614    9.643869e-09
+
+N=   16777216
+    3.995525e+02 sec. (solver)
+
+### THREAD number=       2
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    2.141574e+00 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.584100e-01
+  301    1.316841e-02
+  401    1.683853e-04
+  501    2.433702e-06
+  601    2.317034e-08
+  614    9.643848e-09
+
+N=   16777216
+    2.025903e+02 sec. (solver)
+
+### THREAD number=       3
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    2.236656e+00 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.583620e-01
+  301    1.314115e-02
+  401    1.685718e-04
+  501    2.433490e-06
+  601    2.315735e-08
+  614    9.643760e-09
+
+N=   16777216
+    1.388874e+02 sec. (solver)
+
+### THREAD number=       4
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    1.725845e+00 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.585717e-01
+  301    1.315136e-02
+  401    1.687086e-04
+  501    2.433685e-06
+  601    2.317616e-08
+  614    9.643838e-09
+
+N=   16777216
+    1.095111e+02 sec. (solver)
+
+### THREAD number=       5
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    9.414902e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581493e-01
+  301    1.315510e-02
+  401    1.675440e-04
+  501    2.433673e-06
+  601    2.302140e-08
+  614    9.608014e-09
+
+N=   16777216
+    8.815578e+01 sec. (solver)
+
+### THREAD number=       6
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    7.948999e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581454e-01
+  301    1.311352e-02
+  401    1.675452e-04
+  501    2.433696e-06
+  601    2.293590e-08
+  614    9.580935e-09
+
+N=   16777216
+    7.814513e+01 sec. (solver)
+
+### THREAD number=       7
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    9.985912e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.583693e-01
+  301    1.315549e-02
+  401    1.687203e-04
+  501    2.433693e-06
+  601    2.317790e-08
+  614    9.643851e-09
+
+N=   16777216
+    8.364744e+01 sec. (solver)
+
+### THREAD number=       8
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    8.961570e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292278e+00
+  201    6.582052e-01
+  301    1.315622e-02
+  401    1.684885e-04
+  501    2.433697e-06
+  601    2.317563e-08
+  614    9.643863e-09
+
+N=   16777216
+    8.269768e+01 sec. (solver)
+
+### THREAD number=       9
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    5.943310e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581266e-01
+  301    1.315511e-02
+  401    1.675458e-04
+  501    2.433698e-06
+  601    2.302143e-08
+  614    9.553940e-09
+
+N=   16777216
+    6.457188e+01 sec. (solver)
+
+### THREAD number=      10
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    5.577469e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.582410e-01
+  301    1.315610e-02
+  401    1.686026e-04
+  501    2.433701e-06
+  601    2.317637e-08
+  614    9.643851e-09
+
+N=   16777216
+    6.364372e+01 sec. (solver)
+
+### THREAD number=      11
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    5.577719e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581295e-01
+  301    1.310930e-02
+  401    1.675466e-04
+  501    2.433692e-06
+  601    2.301127e-08
+  614    9.555013e-09
+
+N=   16777216
+    6.298204e+01 sec. (solver)
+
+### THREAD number=      12
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    6.354601e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.582566e-01
+  301    1.314625e-02
+  401    1.680423e-04
+  501    2.433683e-06
+  601    2.314292e-08
+  614    9.643780e-09
+
+N=   16777216
+    6.254790e+01 sec. (solver)
+
+### THREAD number=      13
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    5.499010e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581239e-01
+  301    1.310577e-02
+  401    1.675708e-04
+  501    2.433700e-06
+  601    2.301854e-08
+  614    9.643313e-09
+
+N=   16777216
+    6.217542e+01 sec. (solver)
+
+### THREAD number=      14
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    6.423740e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292278e+00
+  201    6.587907e-01
+  301    1.316461e-02
+  401    1.687707e-04
+  501    2.433703e-06
+  601    2.317947e-08
+  614    9.643861e-09
+
+N=   16777216
+    8.142162e+01 sec. (solver)
+
+### THREAD number=      15
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    5.875371e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581284e-01
+  301    1.310339e-02
+  401    1.675470e-04
+  501    2.433686e-06
+  601    2.298298e-08
+  614    9.553727e-09
+
+N=   16777216
+    6.174208e+01 sec. (solver)
+
+### THREAD number=      16
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    5.608160e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581222e-01
+  301    1.309171e-02
+  401    1.675468e-04
+  501    2.433696e-06
+  601    2.301183e-08
+  614    9.553723e-09
+
+N=   16777216
+    6.123373e+01 sec. (solver)
+
+### THREAD number=      17
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    5.823221e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581284e-01
+  301    1.314711e-02
+  401    1.675461e-04
+  501    2.433686e-06
+  601    2.302137e-08
+  614    9.554069e-09
+
+N=   16777216
+    6.138588e+01 sec. (solver)
+
+### THREAD number=      18
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    5.704608e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581899e-01
+  301    1.312970e-02
+  401    1.676153e-04
+  501    2.433675e-06
+  601    2.303397e-08
+  614    9.643495e-09
+
+N=   16777216
+    6.121294e+01 sec. (solver)
+
+### THREAD number=      19
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    7.262340e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581311e-01
+  301    1.310251e-02
+  401    1.675469e-04
+  501    2.431967e-06
+  601    2.301702e-08
+  614    9.554320e-09
+
+N=   16777216
+    5.882538e+01 sec. (solver)
+
+### THREAD number=      20
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    6.987238e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581201e-01
+  301    1.313126e-02
+  401    1.675446e-04
+  501    2.433584e-06
+  601    2.302075e-08
+  614    9.636592e-09
+
+N=   16777216
+    6.407743e+01 sec. (solver)
+
+### THREAD number=      21
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    7.818429e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.582471e-01
+  301    1.311291e-02
+  401    1.679946e-04
+  501    2.432878e-06
+  601    2.303598e-08
+  614    9.643127e-09
+
+N=   16777216
+    6.032035e+01 sec. (solver)
+
+### THREAD number=      22
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    7.614880e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581185e-01
+  301    1.308477e-02
+  401    1.675517e-04
+  501    2.433696e-06
+  601    2.301381e-08
+  614    9.640723e-09
+
+N=   16777216
+    6.515768e+01 sec. (solver)
+
+### THREAD number=      23
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    7.020431e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581485e-01
+  301    1.312693e-02
+  401    1.675445e-04
+  501    2.433691e-06
+  601    2.301887e-08
+  614    9.637903e-09
+
+N=   16777216
+    6.515851e+01 sec. (solver)
+
+### THREAD number=      24
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    8.386810e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581190e-01
+  301    1.310349e-02
+  401    1.675456e-04
+  501    2.433524e-06
+  601    2.300223e-08
+  614    9.581599e-09
+
+N=   16777216
+    6.524422e+01 sec. (solver)
+
+### THREAD number=      25
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    8.122139e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581778e-01
+  301    1.313978e-02
+  401    1.683163e-04
+  501    2.433697e-06
+  601    2.316258e-08
+  614    9.643818e-09
+
+N=   16777216
+    6.871322e+01 sec. (solver)
+
+### THREAD number=      26
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    8.245890e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581743e-01
+  301    1.313675e-02
+  401    1.682954e-04
+  501    2.433702e-06
+  601    2.315960e-08
+  614    9.643808e-09
+
+N=   16777216
+    6.443087e+01 sec. (solver)
+
+### THREAD number=      27
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    9.977520e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581637e-01
+  301    1.310003e-02
+  401    1.675499e-04
+  501    2.433695e-06
+  601    2.300860e-08
+  614    9.640415e-09
+
+N=   16777216
+    6.432571e+01 sec. (solver)
+
+### THREAD number=      28
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    7.819140e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581503e-01
+  301    1.311207e-02
+  401    1.675447e-04
+  501    2.433695e-06
+  601    2.301441e-08
+  614    9.632523e-09
+
+N=   16777216
+    6.413572e+01 sec. (solver)
+
+### THREAD number=      29
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    9.800661e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581286e-01
+  301    1.309898e-02
+  401    1.675471e-04
+  501    2.433693e-06
+  601    2.292588e-08
+  614    9.553296e-09
+
+N=   16777216
+    6.399353e+01 sec. (solver)
+
+### THREAD number=      30
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    8.121099e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581303e-01
+  301    1.311252e-02
+  401    1.677153e-04
+  501    2.433667e-06
+  601    2.306380e-08
+  614    9.643607e-09
+
+N=   16777216
+    6.550843e+01 sec. (solver)
+
+### THREAD number=      31
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    1.098137e+00 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.582002e-01
+  301    1.311069e-02
+  401    1.676553e-04
+  501    2.433694e-06
+  601    2.302490e-08
+  614    9.642934e-09
+
+N=   16777216
+    6.500362e+01 sec. (solver)
+
+### THREAD number=      32
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    9.787118e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581362e-01
+  301    1.310604e-02
+  401    1.675461e-04
+  501    2.433686e-06
+  601    2.297595e-08
+  614    9.561836e-09
+
+N=   16777216
+    6.275784e+01 sec. (solver)
+
+### THREAD number=      33
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    9.758599e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581810e-01
+  301    1.312584e-02
+  401    1.675831e-04
+  501    2.433692e-06
+  601    2.302149e-08
+  614    9.643307e-09
+
+N=   16777216
+    6.232989e+01 sec. (solver)
+
+### THREAD number=      34
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    1.067921e+00 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581368e-01
+  301    1.312407e-02
+  401    1.677938e-04
+  501    2.433701e-06
+  601    2.309290e-08
+  614    9.643762e-09
+
+N=   16777216
+    6.244252e+01 sec. (solver)
+
+### THREAD number=      35
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    9.035711e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581847e-01
+  301    1.311217e-02
+  401    1.675891e-04
+  501    2.433698e-06
+  601    2.304473e-08
+  614    9.578986e-09
+
+N=   16777216
+    6.201653e+01 sec. (solver)
+
+### THREAD number=      36
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    8.379540e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.582353e-01
+  301    1.313786e-02
+  401    1.685582e-04
+  501    2.433677e-06
+  601    2.316760e-08
+  614    9.643810e-09
+
+N=   16777216
+    5.954786e+01 sec. (solver)

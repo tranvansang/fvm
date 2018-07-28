@@ -1,0 +1,30 @@
+
+### THREAD number=      25
+
+
+You have16777216 elements
+How many colors do you need ?
+  #COLOR must be more than 2 and
+  #COLOR must not be more than16777216
+   CM   if #COLOR .eq. 0
+  RCM   if #COLOR .eq. -1
+  CMRCM if #COLOR .lt. -1
+=>
+color number=50
+
+###  CMRCM
+
+### FINAL COLOR NUMBER      50
+
+    7.738621e-01 sec. (assemble)
+    1    1.997927e+01
+  101    8.292279e+00
+  201    6.581293e-01
+  301    1.311082e-02
+  401    1.675472e-04
+  501    2.433697e-06
+  601    2.294179e-08
+  613    9.985588e-09
+
+N=   16777216
+    5.042262e+01 sec. (solver)
