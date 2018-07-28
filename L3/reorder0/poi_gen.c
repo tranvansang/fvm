@@ -427,7 +427,7 @@ N111:
 	for(ib=0; ib<ZmaxCELtot; ib++) {
 		ic0  = ZmaxCEL[ib];
 		coef = 2.0 * RDZ * ZAREA;
-		icel = OLDtoNEW[ic0-1];
+		icel = col_to_seq(OLDtoNEW[ic0-1] - 1) + 1;
 		D[icel-1] -= coef;
 	}
 
