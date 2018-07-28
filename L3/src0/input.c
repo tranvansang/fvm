@@ -11,7 +11,7 @@
 #include "input.h"
 
 extern int
-INPUT(void)
+INPUT(char *input_file)
 {
 #define BUF_SIZE 1024
 	char line[BUF_SIZE];
@@ -22,7 +22,7 @@ INPUT(void)
 /**************
  * CNTL. file *
  **************/
-	if((fp11 = fopen("INPUT.DAT", "r")) == NULL) {
+	if((fp11 = fopen(input_file, "r")) == NULL) {
 		fprintf(stderr, "Error: %s\n", strerror(errno));
 		return -1;
 	}

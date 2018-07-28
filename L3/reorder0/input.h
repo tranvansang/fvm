@@ -2,6 +2,6 @@
 #define __H_INPUT
 
 extern int
-INPUT(void);
+INPUT(char *input_file);
 
 #endif /* __H_INPUT */

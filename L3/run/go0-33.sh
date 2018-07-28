@@ -2,16 +2,15 @@
 
 #PBS -q u-lecture
 #PBS -N test
-#PBS -l select=1:ncpus=36
+#PBS -l select=1:ncpus=33
 #PBS -Wgroup_list=gt07
 #PBS -l walltime=00:10:00
-#PBS -e testx0.err
-#PBS -o testx0.lst
+#PBS -e test0-33.err
+#PBS -o test0-33.lst
 
 cd $PBS_O_WORKDIR
 . /etc/profile.d/modules.sh
 
-export OMP_NUM_THREADS=36
+export OMP_NUM_THREADS=33
 export KMP_AFFINITY=granularity=fine,compact
-
-numactl ./L3-rsol0
+numactl ./L3-sol0 INPUT-33.DAT

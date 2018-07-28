@@ -14,7 +14,7 @@
 #include "outucd.h"
 
 int
-main()
+main(int argc, char **argv)
 {
 	double *WK;
 	int NPL, NPU;
@@ -26,7 +26,7 @@ main()
 /*********
  * INIT. *
  *********/
-	if(INPUT()) goto error;
+	if(INPUT(argc == 1 ? "INPUT.DAT" : argv[1])) goto error;
 	if(POINTER_INIT()) goto error;
 	if(BOUNDARY_CELL()) goto error;
 	if(CELL_METRICS()) goto error;
